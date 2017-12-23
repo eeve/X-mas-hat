@@ -139,7 +139,7 @@
       var tipText = doc.getElementById('tipText');
       var img = doc.getElementById('img');
       var hats = doc.getElementsByClassName('hide');
-      var hat = 'hat' + Math.round(Math.random() * hats.length - 1 + 0)
+      var hat = 'hat' + Math.round(Math.random() * (hats.length - 1) + 0)
       var canvasFabric;
       var hatInstance;
       var screenWidth = (win.screen.width < 500 ? win.screen.width: 300) - 40;
