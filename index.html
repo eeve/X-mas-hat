@@ -1,102 +1,248 @@
 <!DOCTYPE  html>
 <html lang='en'>
+
 <head>
   <meta charset='UTF-8'>
   <meta name='viewport' content='width=device-width,maximum-scale=1.0,minimum-scale=1.0'>
   <meta http-equiv='X-UA-Compatible' content='ie=edge'>
-  <title>今年圣诞不收礼, 只送一顶帽子</title>
+  <title>请给我一顶圣诞帽</title>
   <style>
     body {
       font-size: 20px;
       text-align: center;
       margin: 0;
     }
-    label {
+
+    .header {
+      color: #c44747;
+      height: 3rem;
+    }
+
+    .footer {
       position: fixed;
       bottom: 0;
       left: 0;
+      right: 0;
       font-size: 10px;
+      text-align: center;
     }
-    .header {
-      color: #108757;
-      height: 3rem;
-    }
+
     #cvs {
       display: none;
       margin: 0 auto;
     }
+
     .canvas-container {
       margin: 0 auto;
+      border: 1px solid #eee;
     }
-    .hide, #exportBtn {
+
+    .hide,
+    #changeBtn,
+    #cancelBtn,
+    #exportBtn {
       display: none;
     }
+
     .body {
       margin: 4rem auto 3rem;
       height: 10rem;
       width: 10rem;
-      border: solid 1px #aaa;
-      box-shadow: 0 0 5px #aaa;
+      border: solid 1px #c44747;
+      box-shadow: 0 0 5px #d1a1a0;
       border-radius: 1rem;
       line-height: 10rem;
       position: relative;
     }
-    #export {
-      display: none;
-      margin: 0 auto;
-      width: 250px;
-      height: 250px;
+
+    #upload {
+      height: 10rem;
+      width: 10rem;
+      position: absolute; 
+      top: 0;
+      left: 0;
+      opacity: 0;
     }
-    .footer {
+
+    #exportImg {
+      display: none;
+      margin: 5rem auto;
+      width: 125px;
+      height: 125px;
+    }
+
+    .btns {
       display: flex;
       justify-content: space-around;
     }
+
     button {
       font-size: 18px;
       color: #fff;
       padding: 0 30px;
       height: 2.3rem;
-      background: #8fd16f;
+      background: #e89090;
       border: 0;
       border-radius: 20px;
+      outline: none;
     }
   </style>
 </head>
+
 <body>
   <div class='header'>
-    <h2>Marry X'mas</h2>
+    <h2 id='titleText'>请给我一顶圣诞帽</h2>
   </div>
   <div class='body' id='uploadContainer'>
     <small id='uploadText'>上传头像</small>
-    <input id='upload' type='file' onchange='viewer()' style='height: 10rem; width: 10rem; position: absolute; top: 0; left: 0; opacity: 0'>
+    <input id='upload' type='file'>
   </div>
-  <img id='export' alt='圣诞快乐' src='' />
+  <img id='exportImg' alt='圣诞快乐' src='' />
   <canvas id='cvs'></canvas>
-  <p id='tip' style='opacity: 0'>点击帽子调整位置和大小</p>
-  <div class='footer'>
-    <button id='change' onClick='changeHat()' style='display: none;'>换 一 顶</button>
-    <button id='exportBtn' onClick='exportFunc()'>生成头像</button>
-    <!-- <a onClick='reUpload()'>重来</a> -->
+  <p id='tipText' style='opacity: 0'>点击帽子调整位置和大小</p>
+  <div class='btns'>
+    <button id='changeBtn'>换 一 顶</button>
+    <button id='exportBtn'>生成头像</button>
+    <button id='cancelBtn'>再修改一下</a>
   </div>
 
-  <label> 💻  with ❤️  by <a href='https://github.com/lqs469/X-mas-hat'>lqs469</a></label>
+  <div class='footer'>❤️  by
+    <a href='https://github.com/lqs469/X-mas-hat'>lqs469</a> & 
+    <a href='https://github.com/eeve/X-mas-hat'>eeve</a>
+  </div>
   <div style='display: none'>
     <img id='img' src='' alt='' />
-    <img class='hide' id='hat0' src='./hat0.png' />
-    <img class='hide' id='hat1' src='./hat1.png' />
-    <img class='hide' id='hat2' src='./hat2.png' />
-    <img class='hide' id='hat3' src='./hat3.png' />
-    <img class='hide' id='hat4' src='./hat4.png' />
-    <img class='hide' id='hat5' src='./hat5.png' />
-    <img class='hide' id='hat6' src='./hat6.png' />
-    <img class='hide' id='hat7' src='./hat7.png' />
-    <img class='hide' id='hat8' src='./hat8.png' />
-    <img class='hide' id='hat9' src='./hat9.png' />
+    <img class='hide' id='hat0' src='./hat1.png' />
+    <img class='hide' id='hat1' src='./hat2.png' />
+    <img class='hide' id='hat2' src='./hat3.png' />
+    <img class='hide' id='hat3' src='./hat4.png' />
+    <img class='hide' id='hat4' src='./hat5.png' />
+    <img class='hide' id='hat5' src='./hat6.png' />
+    <img class='hide' id='hat6' src='./hat7.png' />
+    <img class='hide' id='hat7' src='./hat8.png' />
+    <img class='hide' id='hat8' src='./hat9.png' />
+    <img class='hide' id='hat9' src='./hat10.png' />
+    <img class='hide' id='hat10' src='./hat11.png' />
+    <img class='hide' id='hat11' src='./hat12.png' />
   </div>
 
-<script src="https://cdn.bootcss.com/fabric.js/2.0.0-rc.3/fabric.min.js"></script>
-<script>
-  var cvs=document.getElementById("cvs");var ctx=cvs.getContext("2d");var exportImage=document.getElementById("export");var img=document.getElementById("img");var hat="hat6";var canvasFabric;var hatInstance;var screenWidth=window.screen.width<500?window.screen.width:300;function viewer(){var file=document.getElementById("upload").files[0];console.log(file);var reader=new FileReader;if(file){reader.readAsDataURL(file);reader.onload=function(e){img.src=reader.result;img.onload=function(){img2Cvs(img)}}}else{img.src=""}}function img2Cvs(img){cvs.width=img.width;cvs.height=img.height;cvs.style.display="block";canvasFabric=new fabric.Canvas("cvs",{width:screenWidth,height:screenWidth,backgroundImage:new fabric.Image(img,{scaleX:screenWidth/img.width,scaleY:screenWidth/img.height})});changeHat();document.getElementById("uploadContainer").style.display="none";document.getElementById("uploadText").style.display="none";document.getElementById("upload").style.display="none";document.getElementById("change").style.display="block";document.getElementById("exportBtn").style.display="block";document.getElementById("tip").style.opacity=1}function changeHat(){document.getElementById(hat).style.display="none";var hats=document.getElementsByClassName("hide");hat="hat"+(+hat.replace("hat","")+1)%hats.length;var hatImage=document.getElementById(hat);hatImage.style.display="block";if(hatInstance){canvasFabric.remove(hatInstance)}hatInstance=new fabric.Image(hatImage,{top:40,left:screenWidth/3,scaleX:100/hatImage.width,scaleY:100/hatImage.height,cornerColor:"#0b3a42",cornerStrokeColor:"#fff",cornerStyle:"circle",transparentCorners:false,rotatingPointOffset:30});hatInstance.setControlVisible("bl",false);hatInstance.setControlVisible("tr",false);hatInstance.setControlVisible("tl",false);hatInstance.setControlVisible("mr",false);hatInstance.setControlVisible("mt",false);canvasFabric.add(hatInstance)}function exportFunc(){document.getElementsByClassName("canvas-container")[0].style.display="none";document.getElementById("exportBtn").style.display="none";document.getElementById("tip").innerHTML="长按图片保存或分享";document.getElementById("change").style.display="none";cvs.style.display="none";exportImage.style.display="block";exportImage.src=canvasFabric.toDataURL({width:screenWidth,height:screenWidth})}
-</script>
+  <script src='https://cdn.bootcss.com/fabric.js/2.0.0-rc.3/fabric.min.js'></script>
+  <script>
+    (function(win, doc){
+      var cvs = doc.getElementById('cvs');
+      var ctx = cvs.getContext('2d');
+      var titleText = doc.getElementById('titleText');
+      var exportImage = doc.getElementById('exportImg');
+      var cancelBtn = doc.getElementById('cancelBtn');
+      var changeBtn = doc.getElementById('changeBtn');
+      var exportBtn = doc.getElementById('exportBtn');
+      var tipText = doc.getElementById('tipText');
+      var img = doc.getElementById('img');
+      var hats = doc.getElementsByClassName('hide');
+      var hat = 'hat' + Math.round(Math.random() * hats.length - 1 + 0)
+      var canvasFabric;
+      var hatInstance;
+      var screenWidth = (win.screen.width < 500 ? win.screen.width: 300) - 40;
+      function viewer() {
+        var file = doc.getElementById('upload').files[0];
+        var reader = new FileReader;
+        if (file) {
+          reader.readAsDataURL(file);
+          reader.onload = function(e) {
+            img.src = reader.result;
+            img.onload = function() {
+              img2Cvs(img)
+            }
+          }
+        } else {
+          img.src = ''
+        }
+      }
+      doc.getElementById('upload').onchange = viewer
+      function img2Cvs(img) {
+        cvs.width = img.width;
+        cvs.height = img.height;
+        cvs.style.display = 'block';
+        canvasFabric = new fabric.Canvas('cvs', {
+          width: screenWidth,
+          height: screenWidth,
+          selection: false,
+          backgroundImage: new fabric.Image(img, {
+            scaleX: screenWidth / img.width,
+            scaleY: screenWidth / img.height
+          })
+        });
+        changeHat();
+        doc.getElementById('uploadContainer').style.display = 'none';
+        doc.getElementById('uploadText').style.display = 'none';
+        doc.getElementById('upload').style.display = 'none';
+        changeBtn.style.display = 'block';
+        exportBtn.style.display = 'block';
+        tipText.style.opacity = 1
+      }
+      function changeHat() {
+        doc.getElementById(hat).style.display = 'none';
+        hat = 'hat' + ( + hat.replace('hat', '') + 1) % hats.length;
+        var hatImage = doc.getElementById(hat);
+        hatImage.style.display = 'block';
+        if (hatInstance) {
+          canvasFabric.remove(hatInstance)
+        }
+        hatInstance = new fabric.Image(hatImage, {
+          top: 40 + hatImage.height / 2,
+          left: screenWidth / 2 + hatImage.width / 5,
+          scaleX: 100 / hatImage.width,
+          scaleY: 100 / hatImage.height,
+          angle: 180,
+          flipX: true,
+          flipY: true,
+          cornerSize: 25,
+          cornerColor: '#e89090',
+          cornerStrokeColor: '#fff',
+          cornerStyle: 'circle',
+          transparentCorners: false,
+          borderColor: '#ddd',
+          rotatingPointOffset: 50
+        });
+        // hatInstance.setControlVisible('bl', false);
+        // hatInstance.setControlVisible('tr', false);
+        // hatInstance.setControlVisible('tl', false);
+        hatInstance.setControlVisible('mb', false);
+        hatInstance.setControlVisible('mr', false);
+        // hatInstance.setControlVisible('ml', false);
+        // hatInstance.setControlVisible('mt', false);
+        canvasFabric.add(hatInstance)
+      }
+      changeBtn.onclick = changeHat
+      function exportFunc() {
+        doc.getElementsByClassName('canvas-container')[0].style.display = 'none';
+        exportBtn.style.display = 'none';
+        tipText.innerHTML = '长按图片保存或分享';
+        titleText.innerHTML = '你的圣诞头像，请食用';
+        changeBtn.style.display = 'none';
+        cvs.style.display = 'none';
+        cancelBtn.style.display = 'block';
+        exportImage.style.display = 'block';
+        exportImage.src = canvasFabric.toDataURL({
+          width: screenWidth,
+          height: screenWidth,
+          multiplier: 0.5,
+          enableRetina: true
+        })
+      }
+      exportBtn.onclick = exportFunc
+      function cancelFunc() {
+        doc.getElementsByClassName('canvas-container')[0].style.display = 'block';
+        tipText.innerHTML = '点击帽子调整位置和大小';
+        exportBtn.style.display = 'block';
+        changeBtn.style.display = 'block';
+        cvs.style.display = 'block';
+        cancelBtn.style.display = 'none';
+        exportImage.style.display = 'none';
+      }
+      cancelBtn.onclick = cancelFunc
+    })(window, document)
+  </script>
 </body>
+
 </html>
